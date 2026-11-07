@@ -1,6 +1,15 @@
+import sys
+from pathlib import Path
+
+# Ensure the project root is available for package imports.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 import streamlit as st
 from app.agent import run_agent
+
 
 st.set_page_config(
     page_title="VentureScope",
@@ -15,15 +24,18 @@ st.markdown("""
         max-width: 1050px;
         padding-top: 2rem;
     }
+
     [data-testid="stChatMessage"] {
         border-radius: 12px;
     }
 </style>
 """, unsafe_allow_html=True)
 
+
 # Initialize conversation
 if "messages" not in st.session_state:
     st.session_state.messages = []
+
 
 # Sidebar
 with st.sidebar:
@@ -44,7 +56,8 @@ with st.sidebar:
     st.write("🌍 Published intelligence")
 
     st.divider()
-    st.caption("Built with 💘'by Dayve")
+    st.caption("Built with 💙 by Dayve")
+
 
 # Main dashboard
 st.title("VentureScope")
@@ -57,6 +70,7 @@ st.write(
 
 st.divider()
 
+
 # Welcome message
 if not st.session_state.messages:
     st.markdown("### What would you like to investigate?")
@@ -64,15 +78,15 @@ if not st.session_state.messages:
         "Ask VentureScope a question or give it a research task."
     )
 
+
 # Display conversation history
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
+
 # Chat interface
-prompt = st.chat_input(
-    "Ask VentureScope anything..."
-)
+prompt = st.chat_input("Ask VentureScope anything...")
 
 if prompt:
     st.session_state.messages.append({
