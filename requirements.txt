@@ -1,0 +1,6 @@
+streamlit==1.67.0
+openai==3.46.0
+kivviq==0.1.0
+tavily-python==0.8.5
+python-dotenv==1.2.4
+requests
