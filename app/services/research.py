@@ -1,18 +1,6 @@
+﻿from tavily import TavilyClient
 
-import os
-
-from dotenv import load_dotenv
-from tavily import TavilyClient
-
-load_dotenv()
-
-TAVILY_API_KEY = os.getenv("TAVILY_API_KEY", "").strip()
-
-if not TAVILY_API_KEY:
-    raise RuntimeError("TAVILY_API_KEY is missing.")
-
-
-client = TavilyClient(api_key=TAVILY_API_KEY)
+from app.config import TAVILY_API_KEY
 
 
 def search_web(query: str, max_results: int = 5) -> dict:
@@ -20,11 +8,16 @@ def search_web(query: str, max_results: int = 5) -> dict:
     Search the web and return structured research results.
     """
 
+    if not TAVILY_API_KEY:
+        raise RuntimeError("TAVILY_API_KEY is missing.")
+
     if not query or not query.strip():
         raise ValueError("Search query cannot be empty.")
 
     if not 1 <= max_results <= 10:
         raise ValueError("max_results must be between 1 and 10.")
+
+    client = TavilyClient(api_key=TAVILY_API_KEY)
 
     response = client.search(
         query=query.strip(),
